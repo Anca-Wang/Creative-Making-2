@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Player : MonoBehaviour
+{
+
+    public float speed = 10;
+    public float turnSpeed = 4;
+    public GameObject prefabMusic;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        var music = GameObject.Find("BgMusic");
+        if(music == null){
+            var m = Instantiate(prefabMusic, null);
+            m.name = "BgMusic";
+            DontDestroyOnLoad(m);
+        }
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R)){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Time.timeScale = 1;
+            return;
+        }
+        float x = Input.GetAxis("Horizontal");
+        transform.Translate(x * turnSpeed * Time.deltaTime, 0, speed * Time.deltaTime);
+
+        if(transform.position.x < -4 || transform.position.x > 4){
+            transform.Translate(0, 0, 0);
+        }
+
+        if(transform.position.y < -10){
+            //Time.timeScale = 0;
+        }
+    }
+}
